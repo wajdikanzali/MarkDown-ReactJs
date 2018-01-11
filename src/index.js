@@ -19,13 +19,24 @@ class App extends React.Component {
 		text: sampleText
 	};
 
+	componentWillMount() {
+		const localStorageText = localStorage.getItem('text');
+		if (localStorageText) {
+			this.setState({ 'text' : localStorageText })
+		}
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		localStorage.setItem('text', nextState.text)
+	}
+
 	editText = (event) => {
 		const text = event.target.value;
 		this.setState({ text })
 	};
 
 	renderText = (text) => {
-		const renderText = marked(text, {sanitize: true});
+		const renderText = marked(text, {sanitize: false});
 		return { __html: renderText };
 	};
 
